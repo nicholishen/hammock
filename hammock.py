@@ -1,5 +1,17 @@
-import requests
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# module: hammock.py
+
+""" Chainable, magical class helps you make requests to RESTful services"""
+
 import copy
+import logging
+
+import requests
+
+# Setup logging
+logging.getLogger('hammock').addHandler(logging.NullHandler())
+logger = logging.getLogger("hammock")
 
 
 class Hammock(object):
@@ -97,7 +109,9 @@ class Hammock(object):
         """
         Makes the HTTP request using requests module
         """
-        return self._session.request(method, self._url(*args), **kwargs)
+        url = self._url(*args)
+        logger.debug("%s - %s ; %s", method.upper(), url, kwargs)
+        return self._session.request(method, url, **kwargs)
 
 
 def bind_method(method):
